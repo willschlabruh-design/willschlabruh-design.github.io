@@ -1,0 +1,16 @@
+body
+{
+    background-image: url(image.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+.invisButton
+{
+    background: none;
+    border: none;
+}
+.POSITION
+{
+    position: 400px;
+}

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="css.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>about trees</title>
+</head>
+<body>
+    <input type="password" class="password">
+    <div class="box"></div>
+    <div class="about"></div>
+    <h1 class="top">team trees</h1>
+    <h1 class="pss">password</h1>
+    <input type="username" class="username">
+    <h1 class="brr">username</h1>
+    <a href="signin.html" class="signin">sign up</a>
+    <div class="logbody"></div>
+    <a href="content.html" class="log">log in</a>
+    
+</body>
+<script>
+   
+    (function(){
+        const DEFAULT_USER = 'admin';
+        const DEFAULT_PASS = '1234';
+
+        const usernameInput = document.querySelector('.username');
+        const passwordInput = document.querySelector('.password');
+        const loginLink = document.querySelector('.log');
+        const logBody = document.querySelector('.logbody');
+
+        function getStoredCredentials(){
+            try{
+                const su = localStorage.getItem('tree_user');
+                const sp = localStorage.getItem('tree_pass');
+                if(su && sp) return {user: su, pass: sp};
+            } catch(e){  }
+            return {user: DEFAULT_USER, pass: DEFAULT_PASS};
+        }
+
+        function showError(msg){
+            if(!logBody) return;
+            logBody.textContent = msg;
+            logBody.style.color = 'red';
+        }
+
+        function clearError(){
+            if(!logBody) return;
+            logBody.textContent = '';
+        }
+
+        function attemptLogin(event){
+            if(event) event.preventDefault();
+
+            const enteredUser = usernameInput ? usernameInput.value.trim() : '';
+            const enteredPass = passwordInput ? passwordInput.value : '';
+            const stored = getStoredCredentials();
+
+            if(enteredUser === stored.user && enteredPass === stored.pass){
+                clearError();
+                window.location.href = loginLink.href;
+            } else {
+                showError('Invalid username or password');
+            }
+        }
+
+        if(loginLink){
+            loginLink.addEventListener('click', attemptLogin);
+        }
+
+        [usernameInput, passwordInput].forEach(input => {
+            if(!input) return;
+            input.addEventListener('keydown', (e) => {
+                if(e.key === 'Enter') attemptLogin();
+            });
+        });
+    })();
+</script>
+</html>

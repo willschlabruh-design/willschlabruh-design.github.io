@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="css.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>about trees</title>
+</head>
+<body>
+        <div class="box"></div>
+        <h1 class="top">Create account</h1>
+
+        <label for="username">Username</label>
+        <input id="username" type="text" class="username" placeholder="username">
+
+        <label for="password">Password</label>
+        <input id="password" type="password" class="password" placeholder="password">
+
+        <button class="create">Create account</button>
+        <a href="index.html" class="signin">Back to login</a>
+    
+</body>
+<script>
+    // Signup: save username/password to localStorage under keys 'tree_user' and 'tree_pass'
+    (function(){
+        const createBtn = document.querySelector('.create');
+        const usernameInput = document.querySelector('.username');
+        const passwordInput = document.querySelector('.password');
+        const logBody = document.querySelector('.logbody');
+
+        function showMessage(msg, color){
+            if(!logBody) return;
+            logBody.textContent = msg;
+            logBody.style.color = color || 'black';
+        }
+
+        function validate(u, p){
+            if(!u) return 'Username is required';
+            if(!p) return 'Password is required';
+            if(p.length < 4) return 'Password must be at least 4 characters';
+            return '';
+        }
+
+        function createAccount(){
+            const u = usernameInput ? usernameInput.value.trim() : '';
+            const p = passwordInput ? passwordInput.value : '';
+            const err = validate(u,p);
+            if(err){ showMessage(err, 'red'); return; }
+
+            try{
+                localStorage.setItem('tree_user', u);
+                localStorage.setItem('tree_pass', p);
+                showMessage('Account created. You can now log in.', 'green');
+                // Optionally redirect back to login after short delay
+                setTimeout(() => { window.location.href = 'index.html'; }, 900);
+            } catch(e){
+                showMessage('Unable to save account (storage blocked)', 'red');
+            }
+        }
+
+        if(createBtn){
+            createBtn.addEventListener('click', createAccount);
+        }
+
+        [usernameInput, passwordInput].forEach(inp => {
+            if(!inp) return;
+            inp.addEventListener('keydown', (e) => { if(e.key === 'Enter') createAccount(); });
+        });
+    })();
+</script>
+</html>
